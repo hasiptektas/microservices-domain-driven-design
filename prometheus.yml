@@ -1,0 +1,95 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # User Service
+  - job_name: 'user-service'
+    static_configs:
+      - targets: ['user-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Post Service
+  - job_name: 'post-service'
+    static_configs:
+      - targets: ['post-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Feed Service
+  - job_name: 'feed-service'
+    static_configs:
+      - targets: ['feed-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Interaction Service
+  - job_name: 'interaction-service'
+    static_configs:
+      - targets: ['interaction-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Notification Service
+  - job_name: 'notification-service'
+    static_configs:
+      - targets: ['notification-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Media Service
+  - job_name: 'media-service'
+    static_configs:
+      - targets: ['media-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Tagging Service
+  - job_name: 'tagging-service'
+    static_configs:
+      - targets: ['tagging-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+
+  # Kafka
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka:9092']
+    scrape_interval: 30s
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  # PostgreSQL databases
+  - job_name: 'user-db'
+    static_configs:
+      - targets: ['user-db:5432']
+    scrape_interval: 30s
+
+  - job_name: 'post-db'
+    static_configs:
+      - targets: ['post-db:5432']
+    scrape_interval: 30s
+
+  - job_name: 'interaction-db'
+    static_configs:
+      - targets: ['interaction-db:5432']
+    scrape_interval: 30s
+
+  - job_name: 'notification-db'
+    static_configs:
+      - targets: ['notification-db:5432']
+    scrape_interval: 30s 

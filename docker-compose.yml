@@ -1,0 +1,236 @@
+version: '3.8'
+
+services:
+  # User Service
+  user-service:
+    build: ./user-service
+    ports:
+      - "8081:8080"
+    environment:
+      - DB_HOST=user-db
+      - DB_NAME=userdb
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - user-db
+      - kafka
+    networks:
+      - microservices-network
+
+  user-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - user_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # Post Service
+  post-service:
+    build: ./post-service
+    ports:
+      - "8082:8080"
+    environment:
+      - DB_HOST=post-db
+      - DB_NAME=postdb
+      - KAFKA_BROKERS=kafka:9092
+      - S3_BUCKET=instagram-media-bucket
+    depends_on:
+      - post-db
+      - kafka
+    networks:
+      - microservices-network
+
+  post-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: postdb
+      POSTGRES_USER: post
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - post_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # Feed Service
+  feed-service:
+    build: ./feed-service
+    ports:
+      - "8083:8080"
+    environment:
+      - REDIS_HOST=redis
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - redis
+      - kafka
+    networks:
+      - microservices-network
+
+  # Notification Service
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "8084:8080"
+    environment:
+      - DB_HOST=notification-db
+      - DB_NAME=notificationdb
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - notification-db
+      - kafka
+    networks:
+      - microservices-network
+
+  notification-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: notificationdb
+      POSTGRES_USER: notification
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    volumes:
+      - notification_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # Media Service
+  media-service:
+    build: ./media-service
+    ports:
+      - "8085:8080"
+    environment:
+      - S3_BUCKET=instagram-media-bucket
+      - AWS_ACCESS_KEY_ID=your_access_key
+      - AWS_SECRET_ACCESS_KEY=your_secret_key
+    networks:
+      - microservices-network
+
+  # Interaction Service
+  interaction-service:
+    build: ./interaction-service
+    ports:
+      - "8086:8080"
+    environment:
+      - DB_HOST=interaction-db
+      - DB_NAME=interactiondb
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - interaction-db
+      - kafka
+    networks:
+      - microservices-network
+
+  interaction-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: interactiondb
+      POSTGRES_USER: interaction
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
+    volumes:
+      - interaction_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # Tagging Service
+  tagging-service:
+    build: ./tagging-service
+    ports:
+      - "8087:8080"
+    environment:
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - kafka
+    networks:
+      - microservices-network
+
+  # Infrastructure Services
+  
+  # Apache Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - microservices-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - microservices-network
+
+  # Redis for Caching
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices-network
+
+  # API Gateway
+  api-gateway:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - user-service
+      - post-service
+      - feed-service
+      - notification-service
+      - media-service
+      - interaction-service
+      - tagging-service
+    networks:
+      - microservices-network
+
+  # Monitoring
+  
+  # Prometheus
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - microservices-network
+
+  # Grafana
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - microservices-network
+
+volumes:
+  user_data:
+  post_data:
+  notification_data:
+  interaction_data:
+
+networks:
+  microservices-network:
+    driver: bridge

@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: media-service
+  
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+aws:
+  s3:
+    bucket: ${S3_BUCKET:instagram-media-bucket}
+    region: us-east-1
+    access-key: ${AWS_ACCESS_KEY_ID:your_access_key}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:your_secret_key}
+
+logging:
+  level:
+    com.example.media: DEBUG 

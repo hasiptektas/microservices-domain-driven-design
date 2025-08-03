@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tagging-service
+
+kafka:
+  bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+  topic:
+    post-created: post-created-events
+
+logging:
+  level:
+    com.example.tagging: DEBUG
+    org.springframework.kafka: INFO 
