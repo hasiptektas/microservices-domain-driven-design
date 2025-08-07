@@ -1,3 +1,4 @@
+<!-- Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir. -->
 # Instagram Benzeri Uygulamanın DDD ve Mikroservis Mimarisi
 
 Bu proje, ödevde belirtilen Domain-Driven Design (DDD) prensiplerine göre tasarlanmış Instagram benzeri bir uygulamanın mikroservis mimarisini içermektedir.

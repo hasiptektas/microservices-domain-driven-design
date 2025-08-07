@@ -1,3 +1,4 @@
+// Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir.
 package com.example.interaction.domain.service;
 
 import com.example.interaction.domain.model.Like;
