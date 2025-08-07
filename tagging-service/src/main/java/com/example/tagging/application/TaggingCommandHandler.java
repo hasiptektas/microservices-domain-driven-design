@@ -1,3 +1,4 @@
+// Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir.
 package com.example.tagging.application;
 
 import com.example.tagging.domain.model.Tag;

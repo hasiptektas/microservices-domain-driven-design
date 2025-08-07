@@ -1,3 +1,4 @@
+<!-- Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir. -->
 # Domain-Driven Design ve Mikroservis Geçiş Değerlendirmesi
 
 ## 🎯 Proje Hedefleri ve Başarımlar

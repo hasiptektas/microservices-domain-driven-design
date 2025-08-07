@@ -1,3 +1,4 @@
+// Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir.
 package com.example.tagging.api;
 
 import com.example.tagging.application.TaggingCommandHandler;

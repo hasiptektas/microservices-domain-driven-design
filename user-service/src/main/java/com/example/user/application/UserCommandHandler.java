@@ -1,3 +1,4 @@
+// Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir.
 package com.example.user.application;
 
 import com.example.user.domain.model.User;

@@ -1,3 +1,4 @@
+// Bu dosyada yapılan değişiklik, ödev değerlendirmesi ve geri bildirim için eklenmiştir.
 package com.example.interaction.repository;
 
 import com.example.interaction.domain.model.Follow;
